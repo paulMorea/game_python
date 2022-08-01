@@ -1,19 +1,21 @@
 import pygame
 import random
+import animation
 
-class Monster(pygame.sprite.Sprite):
+class Monster(animation.AnimateSprite):
 
     def __init__(self, game):
-        super().__init__()
+        super().__init__("mummy")
         self.game = game
         self.health = 100
         self.max_health = 100
         self.attack = 0.3
-        self.image = pygame.image.load('assets/mummy.png')
+        # self.image = pygame.image.load('assets/mummy.png')
         self.rect = self.image.get_rect()
         self.rect.x = 1080 + random.randint(0,300)
         self.rect.y = 540
         self.velocity = random.uniform(0.000001, 0.00001)
+        self.start_animation()
     
     def damage(self, amount):
         # infliger les degats 
@@ -33,6 +35,9 @@ class Monster(pygame.sprite.Sprite):
 
                 # appel pour declencher la pluie de cometes 
                 self.game.comet_event.attempt_fall()
+
+    def update_animation(self):
+        self.animate(loop=True)
 
     def update_health_bar(self, surface):
         # definir une couleur pour notre jauge de vie 

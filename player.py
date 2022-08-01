@@ -1,18 +1,19 @@
 import pygame
+import animation
 from projectile import Projectile
 
 # classe qui va representer notre joueur
-class Player(pygame.sprite.Sprite):
+class Player(animation.AnimateSprite):
 
     def __init__(self, game):
-        super().__init__()
+        super().__init__('player')
         self.game = game
         self.health = 100
         self.max_health = 100
         self.attack = 20
         self.all_projectiles = pygame.sprite.Group()
         self.velocity = 2
-        self.image = pygame.image.load('assets/player.png')
+        # self.image = pygame.image.load('assets/player.png')
         self.rect = self.image.get_rect()
         self.rect.x = 440
         self.rect.y = 500
@@ -24,6 +25,8 @@ class Player(pygame.sprite.Sprite):
         # si le joueur n'a plus de point de vie
             self.game.game_over()
         
+    def update_animation(self):
+        self.animate()
 
     def update_health_bar(self, surface):
         # dessiner notre jauge de vie 
@@ -34,6 +37,9 @@ class Player(pygame.sprite.Sprite):
         # creer une nouvelle instance de projectile 
         # projectile = Projectile()
         self.all_projectiles.add(Projectile(self))
+
+        # demarrer l'animation du lancer de projectiles
+        self.start_animation()
 
     def move_right(self):
         # si le joueur n'est pas en collision avec un monstre
